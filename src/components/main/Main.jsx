@@ -9,7 +9,7 @@ const Main = (props) => {
     return (
         <div className="wrapper--user_main">
             <h1>Description</h1>
-            {userInfo.common.length?
+            {userInfo.common!==''?
             <ShowForm />
             : <DragForm check={props.check} setCheck={props.setCheck}/>
             }

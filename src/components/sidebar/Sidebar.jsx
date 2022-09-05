@@ -9,7 +9,7 @@ const Sidebar = (props) => {
     const [active,setActive] = useState('')
 
     const firstRecord =(id)=>{
-         Object.keys(listOfCert).map((key)=> {
+         Object.keys(listOfCert).forEach((key)=> {
              if (id === key) {
                  const elm = listOfCert[key]
                  setUserInfo({
@@ -18,13 +18,14 @@ const Sidebar = (props) => {
                      dateTo: elm.dateTo,
                      issuer: elm.issuerName,
                  })
+
              }
          })
     }
     const showInfo =(e)=>{
           const  id = e.target.id
         setActive(id)
-        Object.keys(listOfCert).map((key)=> {
+        Object.keys(listOfCert).forEach((key)=> {
             if (id === key) {
                 const elm = listOfCert[key]
                 setUserInfo({
@@ -41,8 +42,10 @@ const getAttr =  (buf,OBJECT_IDENTIFIER,shift=5) => {
 
         switch (OBJECT_IDENTIFIER){
             case '2.5.4.3' :
+
                 const regStartC = new RegExp('@.*(' + OBJECT_IDENTIFIER + ')', 'gui')
                 const regC = buf.match(regStartC)
+                if(regC===null)return
                 let posNumC = +regC[1].split('+')[0].substr(1) + shift
                 let regexpC = new RegExp('@' + posNumC + '\\+\\d*:.*?(?=SET)', 'sgui')
                 const regNextC = buf.match(regexpC)
@@ -50,6 +53,7 @@ const getAttr =  (buf,OBJECT_IDENTIFIER,shift=5) => {
             case '2.5.4.11':
                 const regStartI = new RegExp('@.*(' + OBJECT_IDENTIFIER + ')', 'gui')
                 const regI = buf.match(regStartI)
+                if(regI===null)return
                 let posNumI = +regI[0].split('+')[0].substr(1) + shift
                 let regexpI =new RegExp('@' + posNumI + '\\+\\d*:.*?(?= SET)', 'sgui')
                 const regNextI = buf.match(regexpI)
@@ -58,6 +62,7 @@ const getAttr =  (buf,OBJECT_IDENTIFIER,shift=5) => {
             case '2.5.4.7' :
                 const regStartTF = new RegExp('@.*(' + OBJECT_IDENTIFIER + ')', 'gui')
                 const regTF = buf.match(regStartTF)
+                if(regTF===null)return
                 let posNumTF = +regTF[0].split('+')[0].substr(1) + shift+5
                 let regexpTF = new RegExp('@' + posNumTF + '\\+\\d*:.*?(?=UTC)', 'sgui')
                 const regNextTF = buf.match(regexpTF)
@@ -65,6 +70,7 @@ const getAttr =  (buf,OBJECT_IDENTIFIER,shift=5) => {
             case 'UTCTime':
                 const regStartTT = new RegExp('('+OBJECT_IDENTIFIER + '.*?:).*?(?=UTC)', 'gui')
                 const regTT = buf.match(regStartTT)
+                if(regTT===null)return
                 let regNextTT =
                 shift===12?
                 regTT[0].split(':')[1].substr(1)  :
@@ -111,16 +117,16 @@ const getAttr =  (buf,OBJECT_IDENTIFIER,shift=5) => {
     }
 
     useEffect(()=>{
-
-
         // store.clear()
         // setUserInfo({common:'', dateFrom:'', dateTo:'', issuer:'' })
         // setListOfCert({})
+        if( Object.keys(store).length) {
             Object.keys(store).forEach((key, index) => {
                 const buf = store.getItem(key)
                 newElm(buf, key)
             })
             props.setCheck(true)
+        }
     },[ store,props.check])
 
 
