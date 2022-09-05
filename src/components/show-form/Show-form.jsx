@@ -1,11 +1,12 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import './Show-form.scss'
-import { useParams} from "react-router";
 import {AuthContext} from "../context";
 const ShowForm = () => {
     const store = localStorage
     const {userInfo, setUserInfo}= useContext(AuthContext)
+useEffect(()=>{
 
+},[])
     return (
         <div className="warpper--showform">
             <div>{userInfo.common}</div>

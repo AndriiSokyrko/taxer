@@ -1,25 +1,24 @@
-import React, {useEffect} from 'react';
-import {useNavigate} from "react-router-dom";
+import React, { useState} from 'react';
 import Sidebar from "../sidebar/Sidebar";
 import Main from "../main/Main";
 import HeaderForm from "./Header-form";
 import './Form.scss'
 
+
 const Form = () => {
-    const store = localStorage
-    const navigate = useNavigate()
+const [check, setCheck]= useState(true)
 
-    useEffect(()=>{
-
-    },[store])
+// useEffect(()=>{
+//     console.log(check);
+//     setCheck(true)
+// },[check])
     return (
         <div className="wrapper--form">
             <HeaderForm/>
             <div className="wrapper--form_main">
-                <Sidebar/>
-                <Main/>
+                <Sidebar check = {check} setCheck = {setCheck} />
+                <Main check = {check} setCheck = {setCheck} />
             </div>
-
         </div >
     );
 }
